@@ -109,15 +109,7 @@ export default function Login() {
               Sign In
             </button>
 
-            <div className="relative py-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-100"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-400">Or continue with</span>
-              </div>
-            </div>
-
+            
             <button
               onClick={() => navigate("/")}
               className="w-full py-4 border border-gray-200 font-medium hover:bg-gray-50 transition rounded-sm text-sm"

@@ -121,14 +121,7 @@ export default function Signup() {
               Get Started
             </button>
 
-            <div className="relative py-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-100"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-400">Navigation</span>
-              </div>
-            </div>
+            
 
             <button
               onClick={() => navigate("/")}
