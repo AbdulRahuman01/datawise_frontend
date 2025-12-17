@@ -1,90 +1,116 @@
 import { Link } from "react-router-dom";
+import "../index.css";
 
 export default function LearnMore() {
   return (
-    // ⭐ BACKGROUND MATCHES DARK TECH GRADIENT
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white p-6">
+    <div className="min-h-screen w-full bg-white text-black antialiased px-6 md:px-12">
       
-      {/* HEADER */}
-      <div className="max-w-5xl mx-auto text-center mt-10">
-        {/* ⭐ H1 TEXT WITH NEON ACCENT */}
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-cyan-400 drop-shadow-lg">What is DataWise AI?</h1>
-        <p className="text-gray-300 mt-4 text-lg sm:text-xl">
-          Your personal AI-powered data analyst — built to turn natural language into SQL, and data into insights.
-        </p>
-      </div>
+      {/* NAVBAR */}
+      <header className="max-w-7xl mx-auto flex justify-between items-center py-6 border-b border-gray-200">
+        <Link to="/" className="text-xl font-bold tracking-tighter hover:opacity-70 transition-opacity">
+          Datawise AI
+        </Link>
 
-      {/* SECTION: WHAT IT DOES */}
-      {/* ⭐ CONTAINER MATCHES DARK TECH CARDS */}
-      <div className="max-w-4xl mx-auto mt-16 bg-gray-800/60 backdrop-blur-xl border border-cyan-500/50 rounded-2xl p-8 shadow-2xl shadow-cyan-900/40">
-        <h2 className="text-2xl font-bold mb-4 text-cyan-400">🔍 What can DataWise AI do?</h2>
-        <ul className="space-y-3 text-gray-300 text-lg">
-          <li>✔ Convert plain English questions into optimized SQL queries</li>
-          <li>✔ Execute queries directly on your database</li>
-          <li>✔ Display results in clean, readable tables</li>
-          <li>✔ Provide professional explanations like a real data analyst</li>
-          <li>✔ Store chat history for quick reference</li>
-        </ul>
-      </div>
-
-      {/* SECTION: WHO CAN USE IT */}
-      {/* ⭐ CONTAINER MATCHES DARK TECH CARDS */}
-      <div className="max-w-4xl mx-auto mt-12 bg-gray-800/60 backdrop-blur-xl border border-cyan-500/50 rounded-2xl p-8 shadow-2xl shadow-cyan-900/40">
-        <h2 className="text-2xl font-bold mb-4 text-cyan-400">👤 Who is this for?</h2>
-        <p className="text-gray-300 text-lg">
-          DataWise AI is perfect for:
-        </p>
-        <ul className="space-y-3 mt-3 text-gray-300 text-lg">
-          <li>✔ Business owners who want instant insights</li>
-          <li>✔ Data analysts who want faster workflows</li>
-          <li>✔ Developers who need quick SQL answers</li>
-          <li>✔ Students learning SQL and data analytics</li>
-        </ul>
-      </div>
-
-      {/* SECTION: HOW IT WORKS */}
-      {/* ⭐ CONTAINER MATCHES DARK TECH CARDS */}
-      <div className="max-w-4xl mx-auto mt-12 bg-gray-800/60 backdrop-blur-xl border border-cyan-500/50 rounded-2xl p-8 shadow-2xl shadow-cyan-900/40">
-        <h2 className="text-2xl font-bold mb-4 text-cyan-400">⚙️ How does it work?</h2>
-        <ol className="space-y-4 text-gray-300 text-lg">
-          <li>1️⃣ You ask a question in simple English.</li>
-          <li>2️⃣ AI generates safe, accurate SQL based on your database schema.</li>
-          <li>3️⃣ The SQL is executed on your database.</li>
-          <li>4️⃣ Results are displayed instantly.</li>
-          <li>5️⃣ AI explains the results in simple words.</li>
-        </ol>
-      </div>
-
-      {/* SECTION: CTA */}
-      <div className="max-w-4xl mx-auto mt-16 text-center">
-        <h2 className="text-3xl font-bold mb-4 text-cyan-400">Ready to experience it?</h2>
-        <p className="text-gray-400 text-lg mb-6">
-          Sign up and start analyzing your data in seconds.
-        </p>
-
-        <div className="flex justify-center gap-6">
+        <div className="flex gap-6 text-sm font-medium">
+          <Link to="/login" className="hover:underline mt-2">
+            Login
+          </Link>
           <Link
             to="/signup"
-            // ⭐ NEON ACCENT BUTTON
-            className="px-6 py-3 bg-cyan-600 rounded-xl hover:bg-cyan-700 transition text-lg shadow-xl shadow-cyan-600/40 text-white font-semibold"
+            className="px-4 py-2 border border-black hover:bg-black hover:text-white transition"
           >
-            Get Started
-          </Link>
-
-          <Link
-            to="/app"
-            // ⭐ GHOST BUTTON MATCHES ACCENT BORDERS
-            className="px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:bg-gray-700/50 transition text-lg text-cyan-400"
-          >
-            Try Demo
+            Signup
           </Link>
         </div>
-      </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto py-20">
+        {/* HERO SECTION */}
+        <section className="text-center mb-20">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight">
+            The intelligent bridge between <br />
+            your questions and your data.
+          </h1>
+          <p className="mt-8 text-gray-500 text-lg md:text-xl leading-relaxed">
+            Datawise AI is a sophisticated natural language interface for SQL databases. 
+            We turn complex data structures into simple conversations.
+          </p>
+        </section>
+
+        {/* SECTION: WHAT IT DOES */}
+        <section className="border-t border-gray-100 py-16">
+          <h2 className="text-2xl font-bold mb-8">What can DataWise AI do?</h2>
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+            {[
+              { title: "English to SQL", desc: "Instantly translate natural language into optimized, secure SQL queries." },
+              { title: "Direct Execution", desc: "Run queries against your database in real-time with read-only safety." },
+              { title: "Data Visualization", desc: "Automatically render results into clean, professional tables and charts." },
+              { title: "Smart Explanations", desc: "Receive analyst-level summaries that explain the 'why' behind the numbers." },
+              { title: "Persistent History", desc: "Save your favorite queries and chat history for future reference." }
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4">
+                <span className="font-bold text-gray-300">0{i + 1}</span>
+                <div>
+                  <h3 className="font-bold mb-1">{item.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION: HOW IT WORKS */}
+        <section className="border-t border-gray-100 py-16">
+          <h2 className="text-2xl font-bold mb-8">How does it work?</h2>
+          <div className="space-y-8">
+            <div className="flex gap-6">
+              <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center shrink-0 font-bold">1</div>
+              <div>
+                <h3 className="font-bold text-lg">Ask in Plain English</h3>
+                <p className="text-gray-500 mt-1">Type your question like you're talking to a colleague. No syntax knowledge required.</p>
+              </div>
+            </div>
+            <div className="flex gap-6">
+              <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center shrink-0 font-bold">2</div>
+              <div>
+                <h3 className="font-bold text-lg">AI Processing</h3>
+                <p className="text-gray-500 mt-1">Our AI analyzes your database schema to generate a precise, safe SQL query.</p>
+              </div>
+            </div>
+            <div className="flex gap-6">
+              <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center shrink-0 font-bold">3</div>
+              <div>
+                <h3 className="font-bold text-lg">Instant Insights</h3>
+                <p className="text-gray-500 mt-1">View your data immediately accompanied by a clear, written explanation of the results.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION: CTA */}
+        <section className="border-y border-gray-100 py-20 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to see it in action?</h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              to="/signup"
+              className="px-8 py-4 bg-black text-white hover:bg-gray-800 transition font-medium"
+            >
+              Create Free Account
+            </Link>
+            <Link
+              to="/app"
+              className="px-8 py-4 border border-black hover:bg-gray-50 transition font-medium"
+            >
+              Try the Demo
+            </Link>
+          </div>
+        </section>
+      </main>
 
       {/* FOOTER */}
-      <div className="text-center text-gray-500 mt-20">
-        © 2025 DataWise AI — Powered by Abdul Rahuman 🔥
-      </div>
+      <footer className="max-w-7xl mx-auto py-10 text-center text-sm text-gray-400">
+        © 2025 Datawise AI — Built for clarity and speed.
+      </footer>
     </div>
   );
 }
