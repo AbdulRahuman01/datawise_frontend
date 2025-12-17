@@ -84,7 +84,9 @@ export default function Landing() {
               key={idx}
               onClick={() => {
                 localStorage.setItem("autoDemoQuestion", q);
-                window.location.href = "/app";
+localStorage.setItem("forceNewChat", "true");
+window.location.href = "/app";
+
               }}
               className="px-4 py-2 text-sm rounded-xl 
                 bg-cyan-600/80 hover:bg-cyan-500 

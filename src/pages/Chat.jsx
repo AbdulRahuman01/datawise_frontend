@@ -40,14 +40,17 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // AUTH CHECK
+  // ✅ BACKEND BASE URL (ENV BASED)
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  // 🔐 AUTH CHECK
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
       navigate("/login");
     }
   }, [navigate]);
 
-  // 💾 SAVE MESSAGES (user-specific)
+  // 💾 SAVE MESSAGES
   useEffect(() => {
     localStorage.setItem(
       `currentChatMessages_${username}`,
@@ -55,7 +58,7 @@ export default function Chat() {
     );
   }, [messages, username]);
 
-  // 💾 SAVE HISTORY + ACTIVE CHAT (user-specific)
+  // 💾 SAVE HISTORY + ACTIVE CHAT
   useEffect(() => {
     localStorage.setItem(
       `chatHistory_${username}`,
@@ -76,61 +79,99 @@ export default function Chat() {
     }
   }, [history, chatId, username]);
 
-  // SEND MESSAGE
-  const sendMessage = async () => {
-    if (!question.trim()) return;
+  // 🚀 AUTO DEMO QUESTION HANDLER (🔥 THIS IS THE FIX)
+  useEffect(() => {
+    const demoQuestion = localStorage.getItem("autoDemoQuestion");
+    const forceNewChat = localStorage.getItem("forceNewChat");
 
-    const userQuestion = question;
+    if (demoQuestion) {
+      if (forceNewChat) {
+        const newId = Date.now();
+        setMessages([]);
+        setChatId(newId);
+
+        localStorage.setItem(
+          `currentChatMessages_${username}`,
+          JSON.stringify([])
+        );
+        localStorage.setItem(
+          `activeChatId_${username}`,
+          newId.toString()
+        );
+
+        localStorage.removeItem("forceNewChat");
+      }
+
+      setQuestion(demoQuestion);
+      localStorage.removeItem("autoDemoQuestion");
+
+      setTimeout(() => {
+        sendMessage(demoQuestion);
+      }, 600);
+    }
+  }, []);
+
+  // 📤 SEND MESSAGE
+  const sendMessage = async (overrideQuestion = null) => {
+    const finalQuestion = overrideQuestion || question;
+    if (!finalQuestion.trim()) return;
+
     const currentMessages = [
       ...messages,
-      { role: "user", text: userQuestion },
+      { role: "user", text: finalQuestion },
     ];
 
     setMessages(currentMessages);
     setQuestion("");
     setIsLoading(true);
 
-    const res = await fetch("http://127.0.0.1:8000/api/query/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question: userQuestion }),
-    });
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/query/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: finalQuestion }),
+      });
 
-    const data = await res.json();
-    setIsLoading(false);
+      const data = await res.json();
 
-    const newAIMessage = {
-      role: "ai",
-      sql: data.sql,
-      result: data.result,
-      explanation: data.explanation,
-    };
+      const newAIMessage = {
+        role: "ai",
+        sql: data.sql,
+        result: data.result,
+        explanation: data.explanation,
+      };
 
-    const updatedMessages = [...currentMessages, newAIMessage];
-    setMessages(updatedMessages);
+      const updatedMessages = [...currentMessages, newAIMessage];
+      setMessages(updatedMessages);
 
-    const newHistoryEntry = {
-      id: chatId,
-      title:
-        userQuestion.length > 50
-          ? userQuestion.substring(0, 50) + "..."
-          : userQuestion,
-      messages: updatedMessages,
-    };
+      const newHistoryEntry = {
+        id: chatId,
+        title:
+          finalQuestion.length > 50
+            ? finalQuestion.substring(0, 50) + "..."
+            : finalQuestion,
+        messages: updatedMessages,
+      };
 
-    setHistory((prev) => {
-      const existingIndex = prev.findIndex((item) => item.id === chatId);
-      if (existingIndex !== -1) {
-        const updatedHistory = [...prev];
-        updatedHistory[existingIndex] = newHistoryEntry;
-        return updatedHistory;
-      } else {
-        return [newHistoryEntry, ...prev];
-      }
-    });
+      setHistory((prev) => {
+        const existingIndex = prev.findIndex((item) => item.id === chatId);
+        if (existingIndex !== -1) {
+          const updated = [...prev];
+          updated[existingIndex] = newHistoryEntry;
+          return updated;
+        } else {
+          return [newHistoryEntry, ...prev];
+        }
+      });
+
+    } catch (error) {
+      console.error("API Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // START NEW CHAT
+  // ➕ NEW CHAT
   const startNewChat = () => {
     const newId = Date.now();
     setMessages([]);
@@ -140,14 +181,13 @@ export default function Chat() {
       `currentChatMessages_${username}`,
       JSON.stringify([])
     );
-
     localStorage.setItem(
       `activeChatId_${username}`,
       newId.toString()
     );
   };
 
-  // LOAD OLD CHAT
+  // 📂 LOAD OLD CHAT
   const loadHistoryChat = (item) => {
     setMessages(item.messages);
     setChatId(item.id);
@@ -156,7 +196,6 @@ export default function Chat() {
       `activeChatId_${username}`,
       item.id.toString()
     );
-
     localStorage.setItem(
       `currentChatMessages_${username}`,
       JSON.stringify(item.messages)
@@ -165,12 +204,14 @@ export default function Chat() {
     setSidebarOpen(false);
   };
 
-  // LOGOUT
+  // 🚪 LOGOUT
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("username");
     navigate("/login");
   };
+
+  
 
   // 🌟 UI (FULL UI - UNCHANGED)
   return (
