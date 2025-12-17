@@ -217,7 +217,9 @@ export default function Chat() {
 
         {/* MESSAGES AREA */}
         <div className="flex-1 overflow-y-auto bg-white">
-          <div className="max-w-4xl mx-auto py-10 px-6 space-y-10">
+        <div className="max-w-4xl mx-auto py-8 px-3 sm:px-6 space-y-10">
+
+
             {messages.length === 0 && (
               <div className="h-[60vh] flex flex-col items-center justify-center text-center">
                 <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-6">
@@ -268,17 +270,17 @@ export default function Chat() {
                                 <thead className="bg-gray-50">
                                   <tr>
                                     {Object.keys(msg.result[0]).map((col, i) => (
-                                      <th key={i} className="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                                      <th key={i} className="px-4 py-3 text-left text-[10px] font-bold text-gray-700 uppercase tracking-wider">
                                         {col}
                                       </th>
                                     ))}
                                   </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-50">
+                                <tbody className="min-w-full divide-y divide-gray-200">
                                   {msg.result.map((row, ri) => (
                                     <tr key={ri} className="hover:bg-gray-50 transition-colors">
                                       {Object.values(row).map((val, ci) => (
-                                        <td key={ci} className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">
+                                        <td key={ci} className="px-4 py-3 text-sm text-gray-800 font-medium whitespace-nowrap">
                                           {val?.toString()}
                                         </td>
                                       ))}
