@@ -206,19 +206,18 @@ export default function Chat() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 flex flex-col h-full relative">
+      <main className="flex-1 flex flex-col h-full relative w-full">
         
         {/* TOP BAR MOBILE */}
-        <header className="lg:hidden flex items-center justify-between p-4 border-b bg-white">
+        <header className="lg:hidden flex items-center justify-between p-4 border-b bg-white w-full">
           <button onClick={() => setSidebarOpen(true)} className="text-xl">☰</button>
           <span className="font-bold text-sm tracking-tighter">Datawise AI</span>
           <div className="w-6" />
         </header>
 
         {/* MESSAGES AREA */}
-        <div className="flex-1 overflow-y-auto bg-white">
-        <div className="max-w-4xl mx-auto py-8 px-3 sm:px-6 space-y-10">
-
+        <div className="flex-1 overflow-y-auto bg-white w-full">
+          <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 space-y-10 flex flex-col">
 
             {messages.length === 0 && (
               <div className="h-[60vh] flex flex-col items-center justify-center text-center">
@@ -231,17 +230,17 @@ export default function Chat() {
             )}
 
             {messages.map((msg, index) => (
-              <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={index} className={`flex w-full ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 
                 {msg.role === "user" ? (
-                  <div className="bg-gray-900 text-white px-5 py-3 rounded-2xl rounded-tr-none max-w-[85%] sm:max-w-md shadow-sm">
+                  <div className="bg-gray-900 text-white px-5 py-3 rounded-2xl rounded-tr-none max-w-[90%] sm:max-w-md shadow-sm">
                     <p className="text-sm sm:text-base leading-relaxed">{msg.text}</p>
                   </div>
                 ) : (
                   <div className="w-full space-y-4">
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 sm:gap-4">
                       <div className="flex-none w-8 h-8 bg-black text-white flex items-center justify-center rounded-sm text-[10px] font-bold">AI</div>
-                      <div className="flex-1 space-y-6">
+                      <div className="flex-1 space-y-6 min-w-0">
                         
                         {/* SQL BLOCK */}
                         <div className="bg-gray-50 border border-gray-100 rounded-sm overflow-hidden">
@@ -276,7 +275,7 @@ export default function Chat() {
                                     ))}
                                   </tr>
                                 </thead>
-                                <tbody className="min-w-full divide-y divide-gray-200">
+                                <tbody className="bg-white divide-y divide-gray-100">
                                   {msg.result.map((row, ri) => (
                                     <tr key={ri} className="hover:bg-gray-50 transition-colors">
                                       {Object.values(row).map((val, ci) => (
@@ -302,7 +301,7 @@ export default function Chat() {
 
             {/* LOADING STATE */}
             {isLoading && (
-              <div className="flex gap-4 animate-pulse">
+              <div className="flex gap-4 animate-pulse w-full">
                 <div className="w-8 h-8 bg-gray-100 rounded-sm"></div>
                 <div className="flex-1 space-y-3">
                   <div className="h-4 bg-gray-100 rounded w-1/4"></div>
@@ -314,12 +313,12 @@ export default function Chat() {
         </div>
 
         {/* INPUT AREA */}
-        <div className="bg-white border-t border-gray-100 p-6">
+        <div className="bg-white border-t border-gray-100 p-4 sm:p-6 w-full">
           <div className="max-w-4xl mx-auto relative flex items-center">
             <input
               type="text"
               className="w-full p-4 pr-32 bg-gray-50 border border-gray-200 rounded-sm outline-none focus:border-black focus:bg-white transition-all text-sm"
-              placeholder="Query your data (e.g., 'What are the top 5 movies by rating?')"
+              placeholder="Query your data..."
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !isLoading && sendMessage()}
@@ -328,12 +327,12 @@ export default function Chat() {
             <button
               onClick={() => sendMessage()}
               disabled={!question.trim() || isLoading}
-              className="absolute right-2 px-6 py-2 bg-black text-white text-xs font-bold rounded-sm hover:bg-gray-800 disabled:bg-gray-200 transition-colors"
+              className="absolute right-2 px-4 sm:px-6 py-2 bg-black text-white text-[10px] sm:text-xs font-bold rounded-sm hover:bg-gray-800 disabled:bg-gray-200 transition-colors"
             >
-              {isLoading ? "RUNNING..." : "RUN QUERY"}
+              {isLoading ? "..." : "RUN"}
             </button>
           </div>
-          <p className="max-w-4xl mx-auto mt-3 text-[10px] text-gray-400 uppercase tracking-widest text-center lg:text-left">
+          <p className="max-w-4xl mx-auto mt-3 text-[10px] text-gray-400 uppercase tracking-widest text-center">
             Datawise AI v1.0 • Connected to Demo Database
           </p>
         </div>
