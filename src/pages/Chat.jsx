@@ -112,64 +112,63 @@ export default function Chat() {
   }, []);
 
   // 📤 SEND MESSAGE
-  const sendMessage = async (overrideQuestion = null) => {
-    const finalQuestion = overrideQuestion || question;
-    if (!finalQuestion.trim()) return;
-
+  const sendMessage = async () => {
+    if (typeof question !== "string" || !question.trim()) return;
+  
+    const userQuestion = question.trim();
     const currentMessages = [
       ...messages,
-      { role: "user", text: finalQuestion },
+      { role: "user", text: userQuestion },
     ];
-
+  
     setMessages(currentMessages);
     setQuestion("");
     setIsLoading(true);
-
+  
     try {
       const res = await fetch(`${API_BASE_URL}/api/query/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: finalQuestion }),
+        body: JSON.stringify({ question: userQuestion }),
       });
-
+  
       const data = await res.json();
-
+  
       const newAIMessage = {
         role: "ai",
         sql: data.sql,
         result: data.result,
         explanation: data.explanation,
       };
-
+  
       const updatedMessages = [...currentMessages, newAIMessage];
       setMessages(updatedMessages);
-
+  
       const newHistoryEntry = {
         id: chatId,
         title:
-          finalQuestion.length > 50
-            ? finalQuestion.substring(0, 50) + "..."
-            : finalQuestion,
+          userQuestion.length > 50
+            ? userQuestion.substring(0, 50) + "..."
+            : userQuestion,
         messages: updatedMessages,
       };
-
+  
       setHistory((prev) => {
-        const existingIndex = prev.findIndex((item) => item.id === chatId);
-        if (existingIndex !== -1) {
-          const updated = [...prev];
-          updated[existingIndex] = newHistoryEntry;
-          return updated;
-        } else {
-          return [newHistoryEntry, ...prev];
+        const idx = prev.findIndex((item) => item.id === chatId);
+        if (idx !== -1) {
+          const copy = [...prev];
+          copy[idx] = newHistoryEntry;
+          return copy;
         }
+        return [newHistoryEntry, ...prev];
       });
-
-    } catch (error) {
-      console.error("API Error:", error);
+    } catch (err) {
+      console.error("API Error:", err);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   // ➕ NEW CHAT
   const startNewChat = () => {
