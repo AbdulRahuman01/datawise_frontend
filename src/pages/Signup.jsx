@@ -11,23 +11,35 @@ export default function Signup() {
     username: "",
     email: "",
     password: "",
+    confirmPassword:"",
   });
 
   const [error, setError] = useState("");
 
+  const [showPassword,setShowPassword] = useState(false)
+  const [showConfirmPassword,setShowConfirmPassword] = useState(false)
+
   const handleSignup = async () => {
     setError("");
 
-    if (!form.username || !form.email || !form.password) {
+    if (!form.username || !form.email || !form.password || !form.confirmPassword) {
       setError("Please fill in all fields.");
       return;
+    }
+
+    if (form.password !== form.confirmPassword){
+      setError("passwords dosen't match")
     }
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/users/signup/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          username:form.username,
+          email:form.email,
+          password:form.password,
+        }),
       });
 
       const data = await res.json();
@@ -75,6 +87,7 @@ export default function Signup() {
           )}
 
           <div className="space-y-4">
+            {/* USERNAME */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-gray-400">
                 Username
@@ -88,6 +101,7 @@ export default function Signup() {
               />
             </div>
 
+            {/* EMAIL */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-gray-400">
                 Email Address
@@ -101,17 +115,48 @@ export default function Signup() {
               />
             </div>
 
-            <div>
+            {/* PASSWORD */}
+            <div className="relative">
               <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-gray-400">
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Create a strong password"
-                className="w-full p-4 bg-gray-50 border border-gray-200 rounded-sm outline-none focus:border-black transition-colors"
+                className="w-full p-4 pr-12 bg-gray-50 border border-gray-200 rounded-sm outline-none focus:border-black transition-colors"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-[52px] text-gray-500 hover:text-black text-sm"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+
+            {/* CONFIRM PASSWORD */}
+            <div className="relative">
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-gray-400">
+                Confirm Password
+              </label>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Re-enter your password"
+                className="w-full p-4 pr-12 bg-gray-50 border border-gray-200 rounded-sm outline-none focus:border-black transition-colors"
+                value={form.confirmPassword}
+                onChange={(e) =>
+                  setForm({ ...form, confirmPassword: e.target.value })
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-[52px] text-gray-500 hover:text-black text-sm"
+              >
+                {showConfirmPassword ? "🙈" : "👁️"}
+              </button>
             </div>
 
             <button
@@ -120,8 +165,6 @@ export default function Signup() {
             >
               Get Started
             </button>
-
-            
 
             <button
               onClick={() => navigate("/")}
