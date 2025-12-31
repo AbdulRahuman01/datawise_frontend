@@ -166,7 +166,7 @@ export default function Chat() {
             className="w-full bg-black text-white py-3 rounded-sm font-bold text-sm hover:bg-gray-800 transition shadow-sm"
             onClick={startNewChat}
           >
-            + NEW QUERY
+            + NEW CHAT
           </button>
         </div>
 
